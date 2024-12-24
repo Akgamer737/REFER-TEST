@@ -60,9 +60,9 @@
             }
 
             try {
-                const ref = database.ref(`users/${uid}`);
+                const ref = firebase.database().ref(`users/${uid}`);
                 const snapshot = await ref.get();
-
+                
                 if (snapshot.exists()) {
                     const referralCode = snapshot.val().referralCode || "No Referral Code Found";
                     return referralCode;
@@ -80,12 +80,20 @@
             const referralCode = await getReferralCode();
             if (!referralCode) return;
 
-            const shareText = `Hello my friend! Visit this website 𝐓𝐫𝐞𝐧𝐝𝐲 𝐌𝐨𝐯𝐢𝐞𝐬 where you can watch all types of web series and movies for free, and earn money by referring this website.\n Website link: https://trendymovie.netlify.app/\nUse my referral code: **${referralCode}**\n\nRegister via Google or email to help me. Otherwise, you can register as a guest.`;
-
             const shareData = {
                 title: 'Trendy Movies Invitation',
-                text: shareText,
-                url: 'https://trendymovie.netlify.app/'
+                text: `Hello my friend! Visit this website 𝐓𝐫𝐞𝐧𝐝𝐲 𝐌𝐨𝐯𝐢𝐞𝐬 where you can watch all types of web series and movies for free, and earn money by referring this website.
+
+Website link: https://trendymovie.netlify.app/
+Use my referral code: **${referralCode}**
+
+Register via Google or email to help me. Otherwise, you can register as a guest.`,
+                url: 'Hello my friend! Visit this website 𝐓𝐫𝐞𝐧𝐝𝐲 𝐌𝐨𝐯𝐢𝐞𝐬 where you can watch all types of web series and movies for free, and earn money by referring this website.
+
+Website link: https://trendymovie.netlify.app/
+Use my referral code: **${referralCode}**
+
+Register via Google or email to help me. Otherwise, you can register as a guest.'
             };
 
             try {
