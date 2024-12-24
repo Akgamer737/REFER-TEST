@@ -35,8 +35,8 @@
         // Function to get refer code from Firebase
         async function getReferCode(uid) {
             try {
-                const referCodeRef = firebase.database().ref(`users/${uid}/referCode`);
-                const snapshot = await referCodeRef.get();
+                const referCodeRef = database.ref(`users/${uid}/referCode`);
+                const snapshot = await referCodeRef.once('value');
                 if (snapshot.exists()) {
                     return snapshot.val();
                 } else {
