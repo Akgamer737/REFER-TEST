@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Share Content</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Invite Your Friends</h1>
+    <button id="shareButton">Share Invitation</button>
+
+    <script>
+        // Simulated referral system using local storage
+        localStorage.setItem('uid', 'user123'); // Example UID
+        localStorage.setItem('email', 'example@email.com'); // Example email
+        localStorage.setItem('referralCode', 'REF12345'); // Example referral code
+
+        const shareButton = document.getElementById('shareButton');
+
+        function getReferralCode() {
+            // Retrieve referral code, UID, and email from local storage
+            const referralCode = localStorage.getItem('referralCode');
+            const uid = localStorage.getItem('uid');
+            const email = localStorage.getItem('email');
+
+            if (!referralCode || !uid || !email) {
+                alert("Referral code or user details are missing in local storage!");
+                return null;
+            }
+
+            return referralCode;
+        }
+
+        shareButton.addEventListener('click', () => {
+            const referralCode = getReferralCode();
+            if (!referralCode) return;
+
+            const shareData = {
+                title: 'Trendy Movies Invitation',
+                text: `Hello my friend! Visit this website 𝐓𝐫𝐞𝐧𝐝𝐲 𝐌𝐨𝐯𝐢𝐞𝐬 where you can watch all types of web series and movies for free, and earn money by referring this website.
+
+Website link: https://trendymovie.netlify.app/
+Use my referral code: **${referralCode}**
+
+Register via Google or email to help me. Otherwise, you can register as a guest.`,
+                url: 'https://trendymovie.netlify.app/'
+            };
+
+            try {
+                if (navigator.share) {
+                    navigator.share(shareData)
+                        .then(() => alert('Invitation shared successfully!'))
+                        .catch(error => console.error('Error sharing:', error));
+                } else {
+                    alert('Your browser does not support the Web Share API.');
+                }
+            } catch (error) {
+                console.error('Error sharing invitation:', error);
+            }
+        });
+    </script>
+
+</body>
+</html>
