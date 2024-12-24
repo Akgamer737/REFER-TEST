@@ -78,18 +78,20 @@
             try {
                 // Fetch referral code from Firebase
                 const referralCode = await getReferralCode(uid);
-                const fullText = `Hello my friend! Visit this website 𝐓𝐫𝐞𝐧𝐝𝐲 𝐌𝐨𝐯𝐢𝐞𝐬 where you can see all types of web series and movies for free and earn money via referring this website.
                 
+                // Construct full text message
+                const fullText = `Hello my friend! Visit this website 𝐓𝐫𝐞𝐧𝐝𝐲 𝐌𝐨𝐯𝐢𝐞𝐬 where you can see all types of web series and movies for free and earn money via referring this website.
+
 Website link: https://trendymovie.netlify.app/
 
 Use my referral code: **${referralCode}**
 
 Register via Google or email to help me; otherwise, you can register as a guest.`;
 
+                // Share data including the referral code and website link in one go
                 const shareData = {
                     title: 'Trendy Movies Invitation',
-                    text: fullText,
-                    url: 'https://trendymovie.netlify.app/'
+                    text: fullText
                 };
 
                 if (navigator.share) {
