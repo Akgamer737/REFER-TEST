@@ -3,16 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Share Trendy Movies</title>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-database.js"></script>
+    <title>Share Content</title>
+    <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.24.0/firebase-database.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <h1>Share Trendy Movies</h1>
-    <button id="shareButton">Share</button>
+
+    <h1>Invite Your Friends</h1>
+    <button id="shareButton">Share Invitation</button>
 
     <script>
-        // Firebase configuration
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCBPGSYNVaPPDu7RWee9ymckMaI1VQNjd4",
             authDomain: "trendy-movie.firebaseapp.com",
@@ -26,45 +46,60 @@
 
         // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
-        const database = firebase.database(app);
+        const database = firebase.database();
 
-        // Retrieve user UID and email from local storage
-        const uid = localStorage.getItem('uid');
-        const email = localStorage.getItem('email');
+        const shareButton = document.getElementById('shareButton');
 
-        // Function to get refer code from Firebase
-        async function getReferCode(uid) {
+        async function getReferralCode() {
+            const uid = localStorage.getItem('uid');
+            const email = localStorage.getItem('email');
+
+            if (!uid || !email) {
+                alert("User data not found in local storage!");
+                return null;
+            }
+
             try {
-                const referCodeRef = database.ref(`users/${uid}/referCode`);
-                const snapshot = await referCodeRef.once('value');
+                const ref = database.ref(`users/${uid}`);
+                const snapshot = await ref.get();
+
                 if (snapshot.exists()) {
-                    return snapshot.val();
+                    const referralCode = snapshot.val().referralCode || "No Referral Code Found";
+                    return referralCode;
                 } else {
-                    console.error('Refer code not found');
+                    alert("User not found in Firebase database!");
                     return null;
                 }
             } catch (error) {
-                console.error('Error fetching refer code:', error);
+                console.error("Error fetching referral code:", error);
                 return null;
             }
         }
 
-        // Share button click handler
-        document.getElementById('shareButton').addEventListener('click', async () => {
-            if (!uid || !email) {
-                alert('User information is not available. Please log in.');
-                return;
-            }
+        shareButton.addEventListener('click', async () => {
+            const referralCode = await getReferralCode();
+            if (!referralCode) return;
 
-            const referCode = await getReferCode(uid);
+            const shareText = `Hello my friend! Visit this website 𝐓𝐫𝐞𝐧𝐝𝐲 𝐌𝐨𝐯𝐢𝐞𝐬 where you can watch all types of web series and movies for free, and earn money by referring this website.\n Website link: https://trendymovie.netlify.app/\nUse my referral code: **${referralCode}**\n\nRegister via Google or email to help me. Otherwise, you can register as a guest.`;
 
-            if (referCode) {
-                const shareText = `Hello my friend! Visit this website: 𝐓𝐫𝐞𝐧𝐝𝐲 𝐌𝐨𝐯𝐢𝐞𝐬. Here you can see all types of web series and movies for free, and you can earn money by referring this website.\n\nWebsite link: https://trendymovie.netlify.app/\n\nUse my refer code: **${referCode}**\n\nRegister via Google or email to help me. Otherwise, you can register as a guest.`;
-                alert(shareText);
-            } else {
-                alert('Unable to fetch refer code. Please try again later.');
+            const shareData = {
+                title: 'Trendy Movies Invitation',
+                text: shareText,
+                url: 'https://trendymovie.netlify.app/'
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                    alert('Invitation shared successfully!');
+                } else {
+                    alert('Your browser does not support the Web Share API.');
+                }
+            } catch (error) {
+                console.error('Error sharing invitation:', error);
             }
         });
     </script>
+
 </body>
 </html>
