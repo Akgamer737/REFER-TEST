@@ -287,44 +287,112 @@
         .close:hover {
             color: var(--dark);
         }
+.highlight-message {
+    background: #fff5cc;
+    color: #b37400;
+    border-left: 4px solid #ffcc00;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    animation: fadeHighlight 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes fadeHighlight {
+    from {
+        background-color: #fff5cc;
+    }
+    to {
+        background-color: #fff0aa;
+    }
+}
+/* Confirmation Modal */
+.confirmation-modal {
+    display: none;
+    position: fixed;
+    z-index: 101;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* Confirmation Content */
+.confirmation-content {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e0e8ff 100%);
+    margin: 20% auto;
+    padding: 25px;
+    border-radius: 10px;
+    width: 85%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    border: 1px solid var(--primary);
+    animation: floatUp 1.5s ease-out forwards, glowPulse 3s infinite ease-in-out;
+}
+
+/* Header Text */
+.confirmation-content h3 {
+    color: var(--primary);
+    margin-top: 0;
+}
+
+/* Confirmation Icon with Pulse Animation */
+.confirmation-icon {
+    font-size: 50px;
+    color: var(--primary);
+    margin: 15px 0;
+    animation: iconPulse 1.8s infinite ease-in-out;
+}
+
+/* Fade In Animation */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Floating Upward Animation */
+@keyframes floatUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Glow Pulse for Background Container */
+@keyframes glowPulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(0, 102, 255, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 102, 255, 0.4);
+    }
+}
+
+/* Pulse Effect for Icon */
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1);
+        opacity: 0.8;
+    }
+}
         
-        /* Confirmation Modal */
-        .confirmation-modal {
-            display: none;
-            position: fixed;
-            z-index: 101;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0,0,0,0.5);
-        }
-        
-        .confirmation-content {
-            background: white;
-            margin: 20% auto;
-            padding: 25px;
-            border-radius: 10px;
-            width: 85%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            position: relative;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e0e8ff 100%);
-            border: 1px solid var(--primary);
-        }
-        
-        .confirmation-content h3 {
-            color: var(--primary);
-            margin-top: 0;
-        }
-        
-        .confirmation-icon {
-            font-size: 50px;
-            color: var(--primary);
-            margin: 15px 0;
-        }
         
         .form-group {
             margin-bottom: 15px;
@@ -562,18 +630,18 @@
     </div>
     
     <!-- Confirmation Modal -->
-    <div id="confirmationModal" class="confirmation-modal">
-        <div class="confirmation-content">
-            <div class="confirmation-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <h3>Payment Initiated!</h3>
-            <p>Thank you for investing in LevelUp Bazar.</p>
-            <p><strong>Your name will be added to the leaderboard within 6 hours after payment confirmation.</strong></p>
-            <p>You will now be redirected to complete your payment.</p>
-            <button class="btn" onclick="continueToPayment()">Continue</button>
+<div id="confirmationModal" class="confirmation-modal">
+    <div class="confirmation-content">
+        <div class="confirmation-icon">
+            <i class="fas fa-spinner fa-spin"></i> <!-- Animated spinner icon -->
         </div>
+        <h3>Payment Processing...</h3>
+        <p>Thank you for investing in LevelUp Bazar.</p>
+        <p><strong>Your name will be added to the leaderboard within 6 hours after payment confirmation.</strong></p>
+        <p class="highlight-message">🚀 <strong>You will now be redirected to complete your payment.</strong></p>
+        <button class="btn" onclick="continueToPayment()">Continue</button>
     </div>
+</div>
     
     <footer>
         <div class="container">
