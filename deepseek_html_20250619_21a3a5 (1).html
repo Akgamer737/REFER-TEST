@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LevelUp Bazar Crowdfunding</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a00e0;
+            --secondary: #8e2de2;
+            --accent: #ff6b6b;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 15px;
+        }
+        
+        header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            max-width: 150px;
+            margin-bottom: 10px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 1.8rem;
+        }
+        
+        .target-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin: 15px 0;
+            height: 25px;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 20px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        .target-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .benefits {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .benefits h2, .leaderboard h2, .form-container h2 {
+            color: var(--primary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 8px;
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+        
+        .benefits ul {
+            padding-left: 20px;
+        }
+        
+        .benefits li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .notice {
+            background-color: #fff8e1;
+            padding: 12px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+            font-size: 0.9rem;
+        }
+        
+        .highlight {
+            background-color: #e3f2fd;
+            padding: 12px;
+            border-left: 4px solid #2196f3;
+            margin: 15px 0;
+            border-radius: 0 5px 5px 0;
+            font-size: 0.9rem;
+        }
+        
+        .leaderboard {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        
+        .leaderboard-rank {
+            font-weight: bold;
+            width: 30px;
+            color: var(--primary);
+        }
+        
+        .leaderboard-profile {
+            display: flex;
+            align-items: center;
+            flex-grow: 1;
+        }
+        
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        
+        .leaderboard-details {
+            flex-grow: 1;
+        }
+        
+        .leaderboard-name {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .leaderboard-amount {
+            color: var(--primary);
+            font-weight: bold;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .social-icon {
+            font-size: 16px;
+            color: var(--primary);
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            display: inline-block;
+            text-align: center;
+            margin: 5px 0;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 15px;
+            color: #666;
+            font-size: 0.85rem;
+        }
+        
+        .launch-date {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            animation: modalopen 0.4s;
+        }
+        
+        @keyframes modalopen {
+            from {opacity: 0; transform: translateY(-50px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close:hover {
+            color: var(--dark);
+        }
+        
+        /* Confirmation Modal */
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            z-index: 101;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        
+        .confirmation-content {
+            background: white;
+            margin: 20% auto;
+            padding: 25px;
+            border-radius: 10px;
+            width: 85%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e0e8ff 100%);
+            border: 1px solid var(--primary);
+        }
+        
+        .confirmation-content h3 {
+            color: var(--primary);
+            margin-top: 0;
+        }
+        
+        .confirmation-icon {
+            font-size: 50px;
+            color: var(--primary);
+            margin: 15px 0;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 0.95rem;
+            transition: border 0.3s;
+            box-sizing: border-box;
+        }
+        
+        input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(74, 0, 224, 0.2);
+        }
+        
+        small {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        @media (max-width: 400px) {
+            .leaderboard-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .leaderboard-profile {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            
+            .social-icons {
+                justify-content: flex-end;
+                width: 100%;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo {
+                max-width: 200px;
+            }
+            
+            .modal-content, .confirmation-content {
+                margin: 5% auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <img src="LevelUp.jpg" alt="LevelUp Bazar Logo" class="logo">
+            <h1>LevelUp Bazar Crowdfunding</h1>
+            <p>Help us launch our revolutionary e-commerce platform!</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="target-container">
+            <h2>Our Funding Target</h2>
+            <div class="target-amount">₹8,000</div>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" style="width: 15%;">15%</div>
+            </div>
+            <p>₹1,200 raised of ₹8,000 goal</p>
+        </div>
+        
+        <div class="btn-group">
+            <button class="btn btn-block" onclick="openModal()">Invest Now</button>
+            <button class="btn btn-block btn-outline" onclick="toggleBenefits()">What are the Benefits?</button>
+        </div>
+        
+        <div class="benefits" id="benefitsSection" style="display: none;">
+            <h2>Benefits for Investors</h2>
+            <ul>
+                <li><strong>Promote your company or YouTube/Instagram</strong> on our website for 12 months after launching</li>
+                <li><strong>Promote your company or social media accounts</strong> during crowdfunding period</li>
+                <li><strong>Special gift</strong> after 1 month of LevelUp Bazar website launch</li>
+                <li><strong>Lifetime 50% discount</strong> on all purchases at LevelUp Bazar</li>
+            </ul>
+            <div class="notice">
+                <strong>Notice:</strong> These opportunities & benefits are only available for people who invest a minimum of ₹199.
+            </div>
+            <div class="highlight">
+                <strong>Note:</strong> Minimum investment is ₹10, but ₹199 is required to unlock all benefits. We will collect profile images from Instagram/YouTube for display on our leaderboard.
+            </div>
+        </div>
+        
+        <div class="leaderboard">
+            <h2>Top Investors</h2>
+            
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank">1</div>
+                <div class="leaderboard-profile">
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rahul Sharma" class="profile-img">
+                    <div class="leaderboard-details">
+                        <div class="leaderboard-name">Rahul Sharma</div>
+                        <div class="leaderboard-amount">₹1,000</div>
+                    </div>
+                </div>
+                <div class="social-icons">
+                    <a href="https://instagram.com/rahulsharma" target="_blank" aria-label="Instagram"><i class="fab fa-instagram social-icon"></i></a>
+                    <a href="https://youtube.com/rahulsharma" target="_blank" aria-label="YouTube"><i class="fab fa-youtube social-icon"></i></a>
+                </div>
+            </div>
+            
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank">2</div>
+                <div class="leaderboard-profile">
+                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya Patel" class="profile-img">
+                    <div class="leaderboard-details">
+                        <div class="leaderboard-name">Priya Patel</div>
+                        <div class="leaderboard-amount">₹500</div>
+                    </div>
+                </div>
+                <div class="social-icons">
+                    <a href="https://youtube.com/priyapatel" target="_blank" aria-label="YouTube"><i class="fab fa-youtube social-icon"></i></a>
+                </div>
+            </div>
+            
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank">3</div>
+                <div class="leaderboard-profile">
+                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Amit Singh" class="profile-img">
+                    <div class="leaderboard-details">
+                        <div class="leaderboard-name">Amit Singh</div>
+                        <div class="leaderboard-amount">₹300</div>
+                    </div>
+                </div>
+                <div class="social-icons">-</div>
+            </div>
+            
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank">4</div>
+                <div class="leaderboard-profile">
+                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Neha Gupta" class="profile-img">
+                    <div class="leaderboard-details">
+                        <div class="leaderboard-name">Neha Gupta</div>
+                        <div class="leaderboard-amount">₹200</div>
+                    </div>
+                </div>
+                <div class="social-icons">
+                    <a href="https://instagram.com/nehagupta" target="_blank" aria-label="Instagram"><i class="fab fa-instagram social-icon"></i></a>
+                </div>
+            </div>
+            
+            <div class="leaderboard-item">
+                <div class="leaderboard-rank">5</div>
+                <div class="leaderboard-profile">
+                    <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Sanjay Verma" class="profile-img">
+                    <div class="leaderboard-details">
+                        <div class="leaderboard-name">Sanjay Verma</div>
+                        <div class="leaderboard-amount">₹199</div>
+                    </div>
+                </div>
+                <div class="social-icons">-</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Investment Modal -->
+    <div id="investmentModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Invest in LevelUp Bazar</h2>
+            <p>Official launch date: <span class="launch-date">24/February/2026</span></p>
+            
+            <form id="investmentForm">
+                <div class="form-group">
+                    <label for="modal-name">Full Name*</label>
+                    <input type="text" id="modal-name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modal-email">Email Address*</label>
+                    <input type="email" id="modal-email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modal-phone">Mobile Number*</label>
+                    <input type="tel" id="modal-phone" name="phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modal-instagram">Instagram Username (optional)</label>
+                    <input type="text" id="modal-instagram" name="instagram">
+                    <small>We'll use your profile picture from Instagram</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modal-youtube">YouTube Channel (optional)</label>
+                    <input type="text" id="modal-youtube" name="youtube">
+                    <small>We'll use your channel picture from YouTube</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="modal-amount">Investment Amount (₹)*</label>
+                    <input type="number" id="modal-amount" name="amount" min="10" required>
+                    <small>Minimum investment: ₹10 (₹199 required for all benefits)</small>
+                </div>
+                
+                <div class="highlight">
+                    <strong>Note:</strong> We will collect your profile image from Instagram/YouTube if provided. Minimum ₹199 investment unlocks all benefits.
+                </div>
+                
+                <button type="button" class="btn btn-block" onclick="preparePayment()">Proceed to Payment</button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="confirmation-modal">
+        <div class="confirmation-content">
+            <div class="confirmation-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Payment Initiated!</h3>
+            <p>Thank you for investing in LevelUp Bazar.</p>
+            <p><strong>Your name will be added to the leaderboard within 6 hours after payment confirmation.</strong></p>
+            <p>You will now be redirected to complete your payment.</p>
+            <button class="btn" onclick="continueToPayment()">Continue</button>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 LevelUp Bazar. All rights reserved.</p>
+            <p>Website launching on <span class="launch-date">24/February/2026</span></p>
+        </div>
+    </footer>
+    
+    <script>
+        // This would be replaced with actual data from your backend
+        let totalRaised = 1200;
+        const targetAmount = 8000;
+        
+        function updateProgressBar() {
+            const progressPercentage = (totalRaised / targetAmount) * 100;
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = `${progressPercentage}%`;
+            progressBar.textContent = `${Math.round(progressPercentage)}%`;
+            
+            document.querySelector('.target-container p').textContent = 
+                `₹${totalRaised.toLocaleString()} raised of ₹${targetAmount.toLocaleString()} goal`;
+        }
+        
+        function toggleBenefits() {
+            const benefitsSection = document.getElementById('benefitsSection');
+            if (benefitsSection.style.display === 'none') {
+                benefitsSection.style.display = 'block';
+            } else {
+                benefitsSection.style.display = 'none';
+            }
+        }
+        
+        function openModal() {
+            document.getElementById('investmentModal').style.display = 'block';
+        }
+        
+        function closeModal() {
+            document.getElementById('investmentModal').style.display = 'none';
+        }
+        
+        function showConfirmation() {
+            document.getElementById('confirmationModal').style.display = 'block';
+        }
+        
+        function hideConfirmation() {
+            document.getElementById('confirmationModal').style.display = 'none';
+        }
+        
+        function continueToPayment() {
+            hideConfirmation();
+            // Actually redirect to payment
+            const amount = document.getElementById('modal-amount').value;
+            const name = document.getElementById('modal-name').value;
+            const phone = document.getElementById('modal-phone').value;
+            const instagram = document.getElementById('modal-instagram').value;
+            const youtube = document.getElementById('modal-youtube').value;
+            const email = document.getElementById('modal-email').value;
+            
+            const paymentNote = `${name}, ${phone}, ${instagram || 'no instagram'}, ${youtube || 'no youtube'}, ${email}`;
+            const upiId = 'Ankesh.737@fam';
+            const paymentUrl = `upi://pay?pa=${upiId}&pn=LevelUp%20Bazar&am=${amount}&tn=${encodeURIComponent(paymentNote)}`;
+            
+            window.location.href = paymentUrl;
+        }
+        
+        function preparePayment() {
+            const name = document.getElementById('modal-name').value;
+            const email = document.getElementById('modal-email').value;
+            const phone = document.getElementById('modal-phone').value;
+            const amount = document.getElementById('modal-amount').value;
+            
+            if (!name || !email || !phone || !amount) {
+                alert('Please fill all required fields');
+                return;
+            }
+            
+            if (parseInt(amount) < 10) {
+                alert('Minimum investment amount is ₹10');
+                return;
+            }
+            
+            // Show confirmation modal instead of directly redirecting
+            closeModal();
+            showConfirmation();
+            
+            // For demo purposes, we'll just update the values
+            totalRaised += parseInt(amount);
+            updateProgressBar();
+        }
+        
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('investmentModal');
+            const confirmModal = document.getElementById('confirmationModal');
+            
+            if (event.target == modal) {
+                closeModal();
+            }
+            if (event.target == confirmModal) {
+                hideConfirmation();
+            }
+        }
+        
+        // Initialize progress bar
+        updateProgressBar();
+    </script>
+</body>
+</html>
